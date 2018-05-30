@@ -81,6 +81,14 @@ public:
     return this->item;
   }
 
+  void setAltura(int altura){
+    this->altura = altura;
+  }
+
+  int getAltura(){
+    return altura;
+  }
+
 
 };
 
@@ -106,6 +114,13 @@ public:
   }
 
   void insercao(T item){
+    No<T>* aux = new No<T>();
+    aux = raiz;
+    if (aux == NULL){
+      raiz.setItem(item);
+      raiz.setAltura(0);
+    }
+
 
   }
 
