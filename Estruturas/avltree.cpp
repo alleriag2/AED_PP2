@@ -131,9 +131,11 @@ public:
     //SE A ARVORE VAZIA
     if (aux == NULL){
       aux->setChave(pos);
+      aux->setItem(item);
       aux->setDir(NULL);
       aux->setEsq(NULL);
       aux->setBalance(0);
+
 
       cresceu = 1;
     }
@@ -221,9 +223,21 @@ public:
   }
 
 
-  void rotacaoDireita(){}
+  void rotacaoDireita(No<T>* p){
+    No<T>* aux;
+    aux = p->getEsq();
+    p->setEsq(aux->getEsq());
+    aux->setDir(p);
+    p = aux;
+  }
 
-  void rotacaoEsquerda(){}
+  void rotacaoEsquerda(No<T>* p){
+    No<T>* aux;
+    aux = p->getDir();
+    p->setDir(aux->getEsq());
+    aux->setEsq(p);
+    p = aux;
+  }
 
 
 
