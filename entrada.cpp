@@ -36,7 +36,7 @@ int main(){
     if(comando == "INTER"){//comando de Intersecao das Tabelas Hash
       cin>>intersec>>igual>>tabelaHash1>>tabelaHash2>>ponto;
     }
-
+                                
     if(comando == "MINUS"){//comando de Subtracao de Tabelas Hash
       cin>>minus>>igual>>tabelaHash1>>tabelaHash2>>ponto;
     }

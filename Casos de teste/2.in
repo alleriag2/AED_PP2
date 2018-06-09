@@ -1,0 +1,17 @@
+TH bijuu = 9 shukaku matatabi isobu songoku kokuo saiken chomei gyuki kurama .
+TH jinchuuriki = 9 gaara nii yagura roushi han utakata fuu killerbee naruto .
+TH kages = 12 hashirama tobirama hiruzen minato tsunade kakashi naruto yagura mei gaara oonoki a .
+TH time7 = 10 kakashi naruto sakura sasuke yamato sai sarada boruto mitsuki konohamaru .
+PRINT kages KEY minato .
+PRINT kages KEY danzo .
+PRINT jinchuuriki KEY rin .
+INTER sofredores = jinchuuriki kages .
+PRINT time7 KEY boruto .
+PRINT bijuu KEY saiken .
+PRINT bijuu KEY juubi .
+PRINT sofredores KEY naruto .
+PRINT sofredores KEY sasuke .
+INTER fodoes = kages time7 .
+PRINT fodoes KEY kakashi .
+PRINT fodoes KEY sasuke .
+FIM

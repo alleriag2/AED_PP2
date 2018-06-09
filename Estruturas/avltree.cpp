@@ -4,6 +4,7 @@
 
 using namespace std;
 
+
 template <typename I>
 class Item{
 private:
@@ -105,22 +106,12 @@ template <typename T>
 class AVLtree{
 private:
 
-  No<T>* raiz, navegador;
+  No<T>* raiz;
 
 public:
 
   AVLtree(){
     this->raiz->setPai(NULLPTR);
-    navegador = raiz;
-  }
-
-  void busca(T item){
-    No<T>* aux = new No<T>();
-    aux = raiz;
-    if (aux == NULL){
-      cout<<"Item não encontrado"<<endl;
-    }
-    else if(aux->getItemNo().getChave() > )
   }
 
   void insercaoAVL(T item, int pos, No<T>* aux){
@@ -130,7 +121,7 @@ public:
 
     //SE A ARVORE VAZIA
     if (aux == NULL){
-      aux->setChave(pos);
+      aux->getItem()->setChave(pos);
       aux->setItem(item);
       aux->setDir(NULL);
       aux->setEsq(NULL);
@@ -222,6 +213,21 @@ public:
     return cresceu;
   }
 
+  No<T>* removeNo(No<T>* p){
+    if(p->getEsq() != NULL){
+      removeNo(p->getEsq());
+    }
+    else if(p->getDir() != NULL){
+      removeNo(p->getDir());
+    }
+    else{
+      No<T>* aux = new No<T>();
+      aux = p;
+      delete p;
+      return aux;
+    }
+  }
+
 
   void rotacaoDireita(No<T>* p){
     No<T>* aux;
@@ -239,10 +245,91 @@ public:
     p = aux;
   }
 
+  bool checkVazia(){
+    return if (raiz == NULL);
+  }
+
+};
+
+template <typename H>
+class TabelaHash{
+private:
+  AVLtree<H>* tabHash[];
+  int tamHash;
+  string nome;
+public:
+  Tabela_hash(int tamHash, string nome){
+    for (int i = 1; i<=Tam_hash; i++){
+      AVLtree<H>* aux = new AVLtree<H>();
+      tabHash[i] = aux;
+    }
+    this->tamHash = tamHash;
+    this->nome = nome;
+  }
+
+  int funcaoHash(string palavra){
+    long int hashNumber = 0;
+    for (int i=0; i<contarCaracteres(palavra); i++){
+      hashNumber = hash_number + (((palavra[i]))*(potencia(10,9)+7));
+    }
+    return hash_number % tamHash;
+  }
+
+  void addHash(H* elemento){
+    tabHash[funcaoHash(elemento->getNome())]->insereAVL(palavra);
+  }
+
+  void addHash(string elemnto){
+    tabHash[funcaoHash(elemento)]->insereAVL(palavra);
+  }
+
+  bool checkTabHashVazia(){
+    return checkVazia();
+  }
+
+  int getTamHash(){
+    return tamHash;
+  }
 
 
-}
+};
 
+class Kinojo{
+private:
+  TabelaHash* kinojo = new TabelaHash();
+public:
+  Kinojo(){
+  }
+
+  void funcaoUnion(tabHash p, tabHash q){
+    if (p->checkTabHashVazia()){
+      tabHash* aux = new tabHash(p->getTamHash(), R);
+      while(!q->checkTabHashVazia()){
+        aux->insereAVL(p->removeNo());
+      }
+      delete aux;
+    }
+    else if (q->checkTabHashVazia()){
+      tabHash* aux = new tabHash(q->getTamHash(), R);
+      while(!q->checkTabHashVazia()){
+        aux->insereAVL(q->removeNo());
+      }
+      delete aux;
+    }
+    
+  }
+  void funcaoInter(){
+
+  }
+
+  void funcaoMinus(){
+
+  }
+
+  void funcaoPrint(){
+
+  }
+};
 
 
 int main(){}
