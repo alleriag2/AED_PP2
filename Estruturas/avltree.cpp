@@ -1,8 +1,43 @@
 #include <iostream>
-
 #define NULLPTR 0;
 
 using namespace std;
+
+int contarCaracteres(string linha){
+  int contador=0;
+  for(int i=0; i<80; ++i){
+    if (linha[i]!='\0' && linha[i]!=' '){
+        contador++;
+    }
+    else{
+      (linha[i]=='\0');
+      break;
+    }
+  }
+  return contador;
+}
+
+int tamTabelaHash(int numChave){
+  for(int i=(numChave/4);i>0;i--){
+    if(ehPrimo(i)){
+      return i;
+    }
+  }
+  return 0;
+}
+
+bool ehPrimo(int numero){
+  int cont=0;
+  for(int i=2; i<=numero/2;i++){
+    if(numero%i==0){
+      cont++;
+    }
+  }
+  if(cont==0){
+    return true;
+  }
+  return false;
+}
 
 
 template <typename I>
@@ -27,12 +62,11 @@ public:
   int getChave(){
     return chave;
   }
-}
+};
 
 template <typename N>
 class No{
 private:
-
   No<N>* esq;
   No<N>* dir;
   No<N>* pai;
@@ -98,24 +132,19 @@ public:
   int getBalance(){
     return balance;
   }
-
-
 };
 
 template <typename T>
 class AVLtree{
 private:
-
   No<T>* raiz;
 
 public:
-
   AVLtree(){
     this->raiz->setPai(NULLPTR);
   }
 
   void insercaoAVL(T item, int pos, No<T>* aux){
-
     int cresceu; //VARIAVEL PARA SABER SE PRECISA BALANCEAR
     //USA NO LUGAR DO BOOLEANO
 
@@ -126,7 +155,6 @@ public:
       aux->setDir(NULL);
       aux->setEsq(NULL);
       aux->setBalance(0);
-
 
       cresceu = 1;
     }
@@ -187,7 +215,6 @@ public:
         case 1:
           if(aux->getDir()->getBalance() == 1){
             rotacaoEsquerda(aux);
-
             aux->setBalance(0);
             aux->getEsq()->setBalance(0);
           }
@@ -228,7 +255,6 @@ public:
     }
   }
 
-
   void rotacaoDireita(No<T>* p){
     No<T>* aux;
     aux = p->getEsq();
@@ -249,6 +275,25 @@ public:
     return if (raiz == NULL);
   }
 
+  bool busca(string chave, No<T>* p){
+    if(p->getChave() == NULL){
+      return false;
+    }
+    else if(chave < p->getChave()){
+      return busca(chave, p->getEsq());
+    }
+    else if(p->getChave() < chave){
+      return busca(chave, p->getDir());
+    }
+    return true;
+  }
+
+  bool busca(string chave){
+    if(busca(chave, raiz)){
+      return true;
+    }
+    return false;
+  }
 };
 
 template <typename H>
@@ -259,7 +304,7 @@ private:
   string nome;
 public:
   Tabela_hash(int tamHash, string nome){
-    for (int i = 1; i<=Tam_hash; i++){
+    for (int i = 1; i<=tamHash; i++){
       AVLtree<H>* aux = new AVLtree<H>();
       tabHash[i] = aux;
     }
@@ -290,21 +335,28 @@ public:
   int getTamHash(){
     return tamHash;
   }
-
-
 };
 
 class Kinojo{
 private:
   TabelaHash* kinojo = new TabelaHash();
 public:
-  Kinojo(){
-  }
+  Kinojo(){}
 
-  void funcaoUnion(tabHash p, tabHash q){
-    if (p->checkTabHashVazia()){
+  TabelaHash* funcaoUnion(tabHash p, tabHash q){
+
+    //copiar primeira tabela hash para a nova percorrendo e copiando item a item
+    //para cada item na nova tabela, percorrer a segunda tabela para ver
+    //se ele ja existe. Se existir, não insere.
+    //FAVOR NAO REMOVER OS ITENS DA TABELA HASH INICIAL
+    //POIS A TABELA HASH SERÁ USADA NOVAMENTE EM OUTRAS OPERAÇÕES
+    //retorna nova tabela hash com os termos nao repetidos de cada uma das duas
+
+
+
+    /*if (p->checkTabHashVazia()){
       tabHash* aux = new tabHash(p->getTamHash(), R);
-      while(!q->checkTabHashVazia()){
+      while(!p->checkTabHashVazia()){
         aux->insereAVL(p->removeNo());
       }
       delete aux;
@@ -315,21 +367,82 @@ public:
         aux->insereAVL(q->removeNo());
       }
       delete aux;
-    }
-    
+    }*/
+    //criar nova tabela
+    return r;
   }
-  void funcaoInter(){
+  TabelaHash* funcaoInter(tabHash p, tabHash q){
+    //percorre a segunda tabela para cada item da primeira
+    //se achar um item igual, adiciona na nova tabela
+    //NAO REMOVER ITENS
+    //retorna nova tabela com a interseçao
 
+
+    /*if(p->checkTabHashVazia() || ){
+      tabHash* aux = new tabHash(p)
+      while(!p->checkTabHashVazia()){
+        if(){
+          aux->insereAVL(p->removeNo());
+        }
+      }
+    }*/
+    return r;
   }
 
-  void funcaoMinus(){
+  TabelaHash* funcaoMinus(tabHash p, tabHash q){
+    //percorrer a tabeça Q para cada item da tabela P
+    //nova tabela devera conter todos os itens que estao em P e nao estao em Q
+    //tamanho da nova tabela devera ser maior primo menor ou igual que |P|-|Q|
+    //caso |p|-|q|<2 : excecao
+    //caso P e Q nao possuam chaves em comum : return P
+    //caso P MINUS P : return vazio
+    //caso Vazio MINUS Q : return Vazio
+    //caso P MINUS Vazio : return P
 
+    return r;
   }
 
-  void funcaoPrint(){
-
+  void funcaoPrint(tabHash t, int k){
+    //imprimir todos os itens que estao na avl na posicao tabHash[k]
+    //percorre a avl
+    //ordem crescente
+    //se estiver vazia: excecao
+    //se a chave nao existir: excecao
   }
+
 };
 
+int main(){
+  do{//inicio da Leitura
 
-int main(){}
+    cin>>comando;
+
+    if(comando == "TH"){ //comanda que cria uma Tabela Hash
+      cin>>nome>>igual>>numDeChaves;
+      while(numDeChaves--){
+        cin>>chave; //introduz as chaves na Tabela Hash
+      }
+    }
+
+    cin>>ponto;
+
+    if(comando == "UNION"){ //comando de Uniao de Tabelas Hash
+      cin>>uni>>igual>>tabelaHash1>>tabelaHash2>>ponto;
+    }
+
+    if(comando == "INTER"){//comando de Intersecao das Tabelas Hash
+      cin>>intersec>>igual>>tabelaHash1>>tabelaHash2>>ponto;
+    }
+
+    if(comando == "MINUS"){//comando de Subtracao de Tabelas Hash
+      cin>>minus>>igual>>tabelaHash1>>tabelaHash2>>ponto;
+    }
+
+    if(comando == "PRINT"){//comando que imprime as chaves que colidiram na Tabela Hash
+      cout<<chavesColididas<<endl; //Tambem é a saida do codigo
+    }
+
+  }while(comando != "FIM")//fim da Leitura
+
+  return 0;
+}
