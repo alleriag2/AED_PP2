@@ -4,17 +4,6 @@
 
 using namespace std;
 
-int contarCaracteres(string linha)
-{
-  int contador = 0;
-  for(int i = 0; i < 15 ; ++i){
-    if (linha[i] != '\0' && linha[i] != ' '){
-        contador++;
-    }
-    else{
-      (linha[i]=='\0');
-      break;
-    }
 int contarCaracteres(string linha){
   int contador=0;
   for(int i=0; i<80; ++i){
@@ -29,15 +18,6 @@ int contarCaracteres(string linha){
   return contador;
 }
 
-int tamTabelaHash(int numChave){
-  for(int i=(numChave/4);i>0;i--){
-    if(ehPrimo(i)){
-      return i;
-    }
-  }
-  return 0;
-}
-
 bool ehPrimo(int numero){
   int cont=0;
   for(int i=2; i<=numero/2;i++){
@@ -48,10 +28,16 @@ bool ehPrimo(int numero){
   if(cont==0){
     return true;
   }
-  return false;
+  else return false;
 }
+
+int tamTabelaHash(int numChave){
+  for(int i=(numChave/4);i>0;i--){
+    if(ehPrimo(i)){
+      return i;
+    }
   }
-  return contador;
+  return 0;
 }
 
 unsigned long int potencia(unsigned long int numero, int expoente)
@@ -377,7 +363,7 @@ private:
 public:
   Kinojo(){}
 
-  TabelaHash* funcaoUnion(tabHash p, tabHash q){
+  TabelaHash<K>* funcaoUnion(TabelaHash<K> p, TabelaHash<K> q){
 
     //copiar primeira tabela hash para a nova percorrendo e copiando item a item
     //para cada item na nova tabela, percorrer a segunda tabela para ver
@@ -419,10 +405,10 @@ public:
         }
       }
     }*/
-    return r;
+    //return r;
   }
 
-  TabelaHash* funcaoMinus(tabHash p, tabHash q){
+  TabelaHash<K>* funcaoMinus(TabelaHash<K> p, TabelaHash<K> q){
     //percorrer a tabeça Q para cada item da tabela P
     //nova tabela devera conter todos os itens que estao em P e nao estao em Q
     //tamanho da nova tabela devera ser maior primo menor ou igual que |P|-|Q|
@@ -432,10 +418,10 @@ public:
     //caso Vazio MINUS Q : return Vazio
     //caso P MINUS Vazio : return P
 
-    return r;
+    //return r;
   }
 
-  void funcaoPrint(tabHash t, int k){
+  void funcaoPrint(TabelaHash<K> t, int k){
     //imprimir todos os itens que estao na avl na posicao tabHash[k]
     //percorre a avl
     //ordem crescente
@@ -444,9 +430,6 @@ public:
   }
 
 };
-
-int main(){
-  do{//inicio da Leitura
 
 int main(){
 
