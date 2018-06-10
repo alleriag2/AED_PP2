@@ -1,102 +1,106 @@
 #include <iostream>
 
-#define NULLPTR 0;
+
 
 using namespace std;
 
-
-template <typename I>
-class Item{
-private:
-  I item;
-  int chave;
-
-public:
-  void setItem(I item){
-    this->item = item;
+int contarCaracteres(string linha)
+{
+  int contador = 0;
+  for(int i = 0; i < 15 ; ++i){
+    if (linha[i] != '\0' && linha[i] != ' '){
+        contador++;
+    }
+    else{
+      (linha[i]=='\0');
+      break;
+    }
   }
+  return contador;
+}
 
-  I getItem(){
-    return item;
+unsigned long int potencia(unsigned long int numero, int expoente)
+{
+  int aux = numero;
+  if (expoente == 1){
+    return numero;
   }
-
-  void setChave(){
-    this->chave = chave;
+  else if(expoente == 0){
+    return numero = 1;
   }
-
-  int getChave(){
-    return chave;
+  else{
+    for(int i = 1; i <expoente; i++){
+      numero = numero * aux;
+    }
+    return numero;
   }
 }
 
-template <typename N>
+
+template <typename T>
 class No{
 private:
 
-  No<N>* esq;
-  No<N>* dir;
-  No<N>* pai;
+  No<T>* esq;
+  No<T>* dir;
 
-  Item item;
+  T chave;
 
-  int altura;
+  int count;
   int balance;
 
 public:
-  No(No<N>* pai){
-    this->pai = pai;
-    this-> esq = NULLPTR;
-    this-> dir = NULLPTR;
-  }
+  // No(No<T>* pai){
+  //   this-> esq = NULL;
+  //   this-> dir = NULL;
+  // }
 
   No(){
-    this->pai = NULLPTR;
-    this-> esq = NULLPTR;
-    this-> dir = NULLPTR;
+    this-> esq = NULL;
+    this-> dir = NULL;
+    chave = 0;
+    balance = 0;
+    count = 0;
   }
 
-  void setPai(No<N>* pai){
-    this->pai = pai;
-  }
-
-  No*<N> getPai(){
-    return pai;
-  }
-
-  void setEsq(No<N>* esq){
+  void setEsq(No<T>* esq){
     this->esq = esq;
   }
 
-  No*<N> getEsq(){
+  No<T>*& getEsq(){
     return esq;
   }
 
-  void setDir(No<N>* dir){
+  void setDir(No<T>* dir){
     this->dir = dir;
   }
 
-  No*<N> getDir(){
+  No<T>*& getDir(){
     return dir;
   }
 
-  Item getItemNo(){
-    return this->item;
+  void setChave(T novaChave){
+    chave = novaChave;
   }
 
-  void setAltura(int altura){
-    this->altura = altura;
-  }
-
-  int getAltura(){
-    return altura;
+  T getChave(){
+    return chave;
   }
 
   void setBalance(int balance){
-    this->balance = balance;
+    balance = balance;
   }
 
   int getBalance(){
     return balance;
+  }
+
+  void setCount(int count){
+    count = count;
+  }
+
+  int getCount(){
+    return count;
   }
 
 
@@ -106,111 +110,126 @@ template <typename T>
 class AVLtree{
 private:
 
-  No<T>* raiz;
+  No<T>* raiz = new No<T>();
 
 public:
 
   AVLtree(){
-    this->raiz->setPai(NULLPTR);
   }
 
-  void insercaoAVL(T item, int pos, No<T>* aux){
+  void insereAVLmain(T x){
+    cout<<"DDADD"<<endl;
+    insereAVL(x, raiz, false);
+  }
 
-    int cresceu; //VARIAVEL PARA SABER SE PRECISA BALANCEAR
-    //USA NO LUGAR DO BOOLEANO
-
-    //SE A ARVORE VAZIA
-    if (aux == NULL){
-      aux->getItem()->setChave(pos);
-      aux->setItem(item);
-      aux->setDir(NULL);
-      aux->setEsq(NULL);
-      aux->setBalance(0);
-
-
-      cresceu = 1;
+  void insereAVL(T x, No<T>* &p, bool h){
+    No<T>* p1 = new No<T>();
+    No<T>* p2 = new No<T>();
+    if(p == NULL){
+      cout<<"1"<<endl;
+      p = new No<T>();
+      h = true;
+      p->setEsq(NULL);
+      p->setChave(x);
+      p->setDir(NULL);
+      p->setBalance(0);
+      p->setCount(1);
     }
-    else if(aux->getChave() > pos){
-      //TENTA INSERIR NA ARVORE ESQUERDA E VE SE CRESCEU
-      cresceu = insereAVL(item, pos, &aux->getEsq());
-      if(cresceu){
-        switch(aux->getBalance()){
-
-        //CASO A ARV DIR SEJA MAIOR, N HA CRESCIMENTO
-        case 1:
-          aux->setBalance(0);
-          cresceu = 0;
-          break;
-        //CASO A ARV DIREITA TAMANHO IGUAL HOUVE CRESCIMENTO
-        case 0:
-          aux->setBalance(-1);
-          cresceu = 1;
-          break;
-        //CASO A ESQ SEJA MAIOR REBALANCEAR
-        case -1:
-          if(aux->getEsq()->getBalance() == -1){
-            rotacaoDireita(aux);
-            aux->setBalance(0);
-            aux->getDir()->setBalance(0);
+    else if(p->getChave() > x){
+      cout<<"AEDSD"<<endl;
+      insereAVL(x, p->getEsq(), h);
+      if(h){
+        cout<<"d2"<<endl;
+        if(p->getBalance() == 1){
+          cout<<"d3"<<endl;
+          p->setBalance(0);
+          h = false;
+        }
+        else if(p->getBalance() == 0){
+          cout<<"d4"<<endl;
+          p->setBalance(-1);
+        }
+        else{
+          p1 = p->getEsq();
+          if(p1->getBalance() == -1){
+            cout<<"d5"<<endl;
+            p->setEsq(p1->getDir());
+            p1->setDir(p);
+            p->setBalance(0);
+            p = p1;
           }
           else{
-            //ROTACAO DUPLA
-            rotacaoEsquerda(&aux->getEsq());
-
-            rotacaoDireita(aux);
-            if(aux->getBalance() == -1){
-              aux->getEsq()->setBalance(0);
-              aux->getDir()->setBalance(1);
+            p2 = p1->getDir();
+            cout<<"d6"<<endl;
+            p1->setDir(p2->getEsq());
+            p2->setDir(p1);
+            p->setEsq(p2->getDir());
+            p2->setDir(p);
+            cout<<"d7"<<endl;
+            if(p2->getBalance() == -1){
+              p->setBalance(1);
             }
             else{
-              aux->getDir()->setBalance(0);
-              aux->getEsq()->setBalance(-aux->getBalance());
+              p->setBalance(0);
             }
-            aux->setBalance(0);
+            if(p2->getBalance() == 1){
+              p1->setBalance(-1);
+            }
+            else{
+              p1->setBalance(0);
+            }
+            p = p2;
           }
-          cresceu = 0;
+          p->setBalance(0);
+          h = false;
         }
       }
     }
-    else if(aux->getChave() < x){
-      cresceu = insereAVL(item, pos, &aux->getDir());
-      if (cresceu){
-        switch(aux->getBalance()){
-        case -1:
-          aux->setBalance(0);
-          cresceu = 0;
-          break;
-        case 0:
-          aux->setBalance(1);
-          cresceu = 1;
-          break;
-        case 1:
-          if(aux->getDir()->getBalance() == 1){
-            rotacaoEsquerda(aux);
-
-            aux->setBalance(0);
-            aux->getEsq()->setBalance(0);
+    else if(p->getChave() < x){
+      insereAVL(x, p->getDir(), h);
+      if(h){
+        if(p->getBalance() == -1){
+          p->setBalance(0);
+          h=false;
+        }
+        else if(p->getBalance() == 0){
+          p->setBalance(1);
+        }
+        else{
+          p1 = p->getDir();
+          if(p1->getBalance() == 1){
+            p->setDir(p->getEsq());
+            p1->setEsq(p);
+            p->setBalance(0);
+            p = p1;
           }
           else{
-            rotacaoDireita(&aux->getDir());
-            rotacaoEsquerda(aux);
-            if(aux->getBalance() == -1){
-              aux->getEsq()->setBalance(0);
-              aux->getDir()->setBalance(1);
+            p2 = p1->getEsq();
+            p1->setEsq(p2->getDir());
+            p2->setDir(p1);
+            p->setDir(p2->getEsq());
+            p2->setEsq(p);
+            if(p2->getBalance() == 1){
+              p->setBalance(-1);
             }
             else{
-              aux->getDir()->setBalance(0);
-              aux->getEsq()->setBalance(- aux->getBalance());
+              p->setBalance(0);
             }
-            aux->setBalance(0);
+            if(p2->getBalance() == -1){
+              p1->setBalance(1);
+            }
+            else{
+              p1->setBalance(0);
+            }
           }
-          cresceu = 0;
+          p->setBalance(0);
+          h = false;
         }
       }
+    else{
+      p->setCount(p->getCount() + 1);
     }
-    else cresceu = 0;
-
-    return cresceu;
+    }
   }
 
   No<T>* removeNo(No<T>* p){
@@ -228,25 +247,31 @@ public:
     }
   }
 
-
-  void rotacaoDireita(No<T>* p){
-    No<T>* aux;
-    aux = p->getEsq();
-    p->setEsq(aux->getEsq());
-    aux->setDir(p);
-    p = aux;
+  void print(No<T>* p){
+    while(p!= NULL){
+      if(p->getEsq() != NULL){
+        removeNo(p->getEsq());
+      }
+      else if(p->getDir() != NULL){
+        removeNo(p->getDir());
+      }
+      else{
+        cout<<"A chave eh: "<<p->getChave()<<endl;
+      }
+    }
   }
 
-  void rotacaoEsquerda(No<T>* p){
-    No<T>* aux;
-    aux = p->getDir();
-    p->setDir(aux->getEsq());
-    aux->setEsq(p);
-    p = aux;
-  }
 
   bool checkVazia(){
-    return if (raiz == NULL);
+    return raiz == NULL;
+  }
+
+  void setRaiz(No<T>* raiz){
+    this->raiz = raiz;
+  }
+
+  No<T>* getRaiz(){
+    return raiz;
   }
 
 };
@@ -258,8 +283,8 @@ private:
   int tamHash;
   string nome;
 public:
-  Tabela_hash(int tamHash, string nome){
-    for (int i = 1; i<=Tam_hash; i++){
+  TabelaHash(int tamHash, string nome){
+    for (int i = 1; i<=tamHash; i++){
       AVLtree<H>* aux = new AVLtree<H>();
       tabHash[i] = aux;
     }
@@ -270,21 +295,21 @@ public:
   int funcaoHash(string palavra){
     long int hashNumber = 0;
     for (int i=0; i<contarCaracteres(palavra); i++){
-      hashNumber = hash_number + (((palavra[i]))*(potencia(10,9)+7));
+      hashNumber = hashNumber + (((palavra[i]))*(potencia(10,9)+7));
     }
-    return hash_number % tamHash;
+    return hashNumber % tamHash;
   }
 
   void addHash(H* elemento){
-    tabHash[funcaoHash(elemento->getNome())]->insereAVL(palavra);
+    tabHash[funcaoHash(elemento->getNome())]->insereAVL(elemento);
   }
 
-  void addHash(string elemnto){
-    tabHash[funcaoHash(elemento)]->insereAVL(palavra);
+  void addHash(string elemento){
+    tabHash[funcaoHash(elemento)]->insereAVL(elemento);
   }
 
   bool checkTabHashVazia(){
-    return checkVazia();
+    return tabHash->checkVazia();
   }
 
   int getTamHash(){
@@ -294,29 +319,30 @@ public:
 
 };
 
+template <typename K>
 class Kinojo{
 private:
-  TabelaHash* kinojo = new TabelaHash();
+  TabelaHash<TabelaHash<K>>* kinojo = new TabelaHash<TabelaHash<K>>();
 public:
   Kinojo(){
   }
 
-  void funcaoUnion(tabHash p, tabHash q){
+  void funcaoUnion(TabelaHash<K> p, TabelaHash<K> q){
     if (p->checkTabHashVazia()){
-      tabHash* aux = new tabHash(p->getTamHash(), R);
+      TabelaHash<K>* aux = new TabelaHash<K>(p->getTamHash(), "R");
       while(!q->checkTabHashVazia()){
         aux->insereAVL(p->removeNo());
       }
       delete aux;
     }
     else if (q->checkTabHashVazia()){
-      tabHash* aux = new tabHash(q->getTamHash(), R);
+      TabelaHash<K>* aux = new TabelaHash<K>(q->getTamHash(), "R");
       while(!q->checkTabHashVazia()){
         aux->insereAVL(q->removeNo());
       }
       delete aux;
     }
-    
+
   }
   void funcaoInter(){
 
@@ -332,4 +358,22 @@ public:
 };
 
 
-int main(){}
+int main(){
+
+  AVLtree<int>* arv = new AVLtree<int>();
+
+  arv->insereAVLmain(2);
+  arv->print(arv->getRaiz());
+  arv->insereAVLmain(3);
+  arv->insereAVLmain(5);
+  //arv->insereAVLmain(4);
+  //arv->insereAVLmain(6);
+  //arv->insereAVLmain(8);
+  //arv->insereAVLmain(10);
+  //arv->insereAVLmain(7);
+  //arv->insereAVLmain(11);
+  //arv->insereAVLmain(20);
+
+  //arv->print(arv->getRaiz());
+
+}
