@@ -126,53 +126,52 @@ public:
 
 
 };
-
 template <typename T>
 class AVLtree{
 private:
 
-  No<T>* raiz = new No<T>();
+  No<T>* raiz;
+
 
 public:
+
   AVLtree(){
   }
 
-  void insereAVLmain(T x){
-    cout<<"DDADD"<<endl;
+  void percorreEmOrdem(){
+    percorreEmOrdem(raiz);
+  }
+
+  void insereAVLmain(int x){
     insereAVL(x, raiz, false);
   }
 
   void insereAVL(T x, No<T>* &p, bool h){
-    No<T>* p1 = new No<T>();
-    No<T>* p2 = new No<T>();
+    No<T>* p1;
+    No<T>* p2;
     if(p == NULL){
-      cout<<"1"<<endl;
       p = new No<T>();
       h = true;
-      p->setEsq(NULL);
       p->setChave(x);
+      p->setEsq(NULL);
       p->setDir(NULL);
       p->setBalance(0);
       p->setCount(1);
+
     }
     else if(p->getChave() > x){
-      cout<<"AEDSD"<<endl;
       insereAVL(x, p->getEsq(), h);
       if(h){
-        cout<<"d2"<<endl;
         if(p->getBalance() == 1){
-          cout<<"d3"<<endl;
           p->setBalance(0);
           h = false;
         }
         else if(p->getBalance() == 0){
-          cout<<"d4"<<endl;
           p->setBalance(-1);
         }
         else{
           p1 = p->getEsq();
           if(p1->getBalance() == -1){
-            cout<<"d5"<<endl;
             p->setEsq(p1->getDir());
             p1->setDir(p);
             p->setBalance(0);
@@ -180,12 +179,10 @@ public:
           }
           else{
             p2 = p1->getDir();
-            cout<<"d6"<<endl;
             p1->setDir(p2->getEsq());
             p2->setDir(p1);
             p->setEsq(p2->getDir());
             p2->setDir(p);
-            cout<<"d7"<<endl;
             if(p2->getBalance() == -1){
               p->setBalance(1);
             }
@@ -252,33 +249,51 @@ public:
     }
   }
 
-  No<T>* removeNo(No<T>* p){
-    if(p->getEsq() != NULL){
-      removeNo(p->getEsq());
-    }
-    else if(p->getDir() != NULL){
-      removeNo(p->getDir());
+  No<T>*& busca(string buscado){
+    return busca(buscado, raiz);
+  }
+
+  No<T>*& busca(string buscado, No<T> *& aux){
+    if(aux != NULL){
+      if(aux->getNome() == buscado){
+        return aux;
+      }
+      else if(aux->getEsq() != NULL){
+        if(aux->getNome() == buscado){
+          return aux;
+        }
+        else busca(buscado, aux->getEsq());
+      }
+      else if(aux->getDir() != NULL){
+        if(aux->getNome() == buscado){
+          return aux;
+        }
+        else busca(buscado, aux->getDir());
+      }
     }
     else{
-      No<T>* aux = new No<T>();
-      aux = p;
-      delete p;
-      return aux;
+        return aux;
     }
   }
 
-  void print(No<T>* p){
-    while(p!= NULL){
-      if(p->getEsq() != NULL){
-        removeNo(p->getEsq());
-      }
-      else if(p->getDir() != NULL){
-        removeNo(p->getDir());
-      }
-      else{
-        cout<<"A chave eh: "<<p->getChave()<<endl;
-      }
+  void percorreEmOrdem(No<T> *& p){
+    if(p != NULL){
+      percorreEmOrdem(p->getEsq());
+      cout << p->getChave() << " " << endl;
+      percorreEmOrdem(p->getDir());
     }
+  }
+
+  void ordemCentral(No<T>* p){
+    if(raiz){
+      cout<<ordemCentral(p->getEsq())<<endl;
+      cout<<p<<endl;
+      cout<<ordemCentral(p->getDir())<<endl;
+    }
+  }
+
+  void ordemCentral(){
+    ordemCentral(raiz);
   }
 
 
@@ -294,26 +309,8 @@ public:
     return raiz;
   }
 
-  bool busca(string chave, No<T>* p){
-    if(p->getChave() == NULL){
-      return false;
-    }
-    else if(chave < p->getChave()){
-      return busca(chave, p->getEsq());
-    }
-    else if(p->getChave() < chave){
-      return busca(chave, p->getDir());
-    }
-    return true;
-  }
-
-  bool busca(string chave){
-    if(busca(chave, raiz)){
-      return true;
-    }
-    return false;
-  }
 };
+
 
 template <typename H>
 class TabelaHash{
@@ -436,7 +433,6 @@ int main(){
   AVLtree<int>* arv = new AVLtree<int>();
 
   arv->insereAVLmain(2);
-  arv->print(arv->getRaiz());
   arv->insereAVLmain(3);
   arv->insereAVLmain(5);
   //arv->insereAVLmain(4);
