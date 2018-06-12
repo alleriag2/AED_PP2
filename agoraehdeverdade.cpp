@@ -191,9 +191,9 @@ public:
     this->item = item;
   }
 
-  void criaItem(N item){
-    item.setChave(item);
-    item.setConteudo(item);
+  void criaItem(N novoItem){
+    item.setChave(novoItem);
+    item.setConteudo(novoItem);
   }
 
 };
