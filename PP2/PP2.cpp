@@ -2,8 +2,7 @@
 
 using namespace std;
 
-int contarCaracteres(string linha)
-{
+int contarCaracteres(string linha){
   int contador = 0;
   for(int i = 0; i < 80 ; ++i){
     if (linha[i] != '\0' && linha[i] != ' '){
@@ -17,8 +16,7 @@ int contarCaracteres(string linha)
   return contador;
 }
 
-unsigned long int potencia(unsigned long int numero, int expoente)
-{
+unsigned long int potencia(unsigned long int numero, int expoente){
   int aux = numero;
   if (expoente == 1){
     return numero;
@@ -34,21 +32,16 @@ unsigned long int potencia(unsigned long int numero, int expoente)
   }
 }
 
-
 template <typename N>
 class No{
 private:
-
   No<N>* esq;
   No<N>* dir;
-
   N chave;
   int count;
   int balance;
 
-
 public:
-
   No(){
     esq = NULL;
     dir = NULL;
@@ -95,19 +88,14 @@ public:
   int getCount(){
     return count;
   }
-
-
 };
 
 template <typename T>
 class AVLtree{
 private:
-
   No<T>* raiz;
 
-
 public:
-
   AVLtree(){
     raiz = NULL;
   }
@@ -351,9 +339,7 @@ public:
         else busca(buscado, aux->getDir());
       }
     }
-    else{
-        return aux;
-    }
+    return aux;
   }
 
   No<T>* buscaHash(string buscado){
@@ -378,9 +364,7 @@ public:
         else buscaHash(buscado, aux->getDir());
       }
     }
-    else{
-        return aux;
-    }
+    return aux;
   }
 
   void percorreEmOrdem(No<T> *& p){
@@ -403,7 +387,6 @@ public:
     ordemCentral(raiz);
   }
 
-
   bool checkVazia(){
     return raiz == NULL;
   }
@@ -415,7 +398,6 @@ public:
   No<T>* getRaiz(){
     return raiz;
   }
-
 };
 
 template <typename H>
@@ -423,7 +405,6 @@ class TabelaHash{
 private:
   int tamHash;
   string nome;
-
   AVLtree<H>* tabHash;
 
 public:
@@ -436,7 +417,6 @@ public:
     this->tamHash = tamHash;
     this->nome = nome;
     tabHash = new AVLtree<H>[tamHash];
-
   }
 
   int funcaoHash(string palavra){
@@ -450,8 +430,6 @@ public:
   void addHash(string elemento){
     tabHash[funcaoHash(elemento)].insereAVL(elemento);
   }
-
-
 
   bool checkTabHashVazia(){
     return tabHash->checkVazia();
@@ -476,9 +454,7 @@ public:
   AVLtree<H> getTree(int pos){
     return tabHash[pos];
   }
-
 };
-
 
 class Kinojo{
 private:
@@ -523,9 +499,7 @@ public:
       else cout<<"Tabela "<<nomeTabHash<<" vazia"<<endl;
     }
   }
-
 };
-
 
 int main(){
   string comando, nome, key, uni, intersec, minus, tabelaHash1, tabelaHash2, nomeTabelaHash, chave;
@@ -534,32 +508,30 @@ int main(){
   Kinojo* kinojo = new Kinojo();
   TabelaHash<string>* th;
 
-  do{//inicio da Leitura
+  do{
 
     cin>>comando;
 
-    if(comando == "TH"){ //comanda que cria uma Tabela Hash
+    if(comando == "TH"){
       cin>>nome>>igual>>numDeChaves;
       th = new TabelaHash<string>(numDeChaves, nome);
       while(numDeChaves--){
-        cin>>chave; //introduz as chaves na Tabela Hash
+        cin>>chave;
         th->addHash(chave);
       }
     }
 
     cin>>ponto;
 
-    if(comando == "UNION"){ //comando de Uniao de Tabelas Hash
-      cin>>uni>>igual>>
-
-      tabelaHash1>>tabelaHash2>>ponto;
+    if(comando == "UNION"){
+      cin>>uni>>igual>>tabelaHash1>>tabelaHash2>>ponto;
     }
 
-    if(comando == "INTER"){//comando de Intersecao das s Hash
+    if(comando == "INTER"){
       cin>>intersec>>igual>>tabelaHash1>>tabelaHash2>>ponto;
     }
 
-    if(comando == "MINUS"){//comando de Subtracao de Tabelas Hash
+    if(comando == "MINUS"){
       cin>>minus>>igual>>tabelaHash1>>tabelaHash2>>ponto;
     }
 
@@ -572,7 +544,7 @@ int main(){
       kinojo->funcaoPrint(nomeTabelaHash, chave);
     }
 
-  }while(comando != "FIM");//fim da Leitura
+  }while(comando != "FIM");
 
   return 0;
 }
