@@ -115,7 +115,7 @@ public:
   void insereAVLHash(T tabH, No<T>* &p, bool h){
     No<T>* p1;
     No<T>* p2;
-    string x = tabH->getNome();
+    string x = tabH.getNome();
     if(p == NULL){
       p = new No<T>();
       h = true;
@@ -125,7 +125,7 @@ public:
       p->setBalance(0);
       p->setCount(1);
     }
-    else if(p->getChave()->getNome() > x){
+    else if(p->getChave().getNome() > x){
       insereAVLHash(tabH, p->getEsq(), h);
       if(h){
         if(p->getBalance() == 1){
@@ -168,7 +168,7 @@ public:
         }
       }
     }
-    else if(p->getChave()->getNome() < x){
+    else if(p->getChave().getNome() < x){
       insereAVLHash(tabH, p->getDir(), h);
       if(h){
         if(p->getBalance() == -1){
@@ -342,24 +342,24 @@ public:
     return aux;
   }
 
-  No<T>* buscaHash(string buscado){
+  No<T> buscaHash(string buscado){
     return buscaHash(buscado, raiz);
   }
 
-  No<T>* buscaHash(string buscado, No<T> *&aux){
+  No<T> buscaHash(string buscado, No<T> *&aux){
     if(aux != NULL){
       if(aux->getChave().getNome() == buscado){
-        return aux;
+        return aux->getChave();
       }
       else if(aux->getEsq() != NULL){
         if(aux->getChave().getNome() == buscado){
-          return aux;
+          return aux->getChave();
         }
         else buscaHash(buscado, aux->getEsq());
       }
       else if(aux->getDir() != NULL){
         if(aux->getChave().getNome() == buscado){
-          return aux;
+          return aux->getChave();
         }
         else buscaHash(buscado, aux->getDir());
       }
@@ -481,14 +481,21 @@ public:
   }
 
   void funcaoPrint(string nomeTabHash, string key){
-    No<TabelaHash<string>>* aux = new No<TabelaHash<string>>();
+
+    TabelaHash<string> aux;
     No<string>* auxiliar = new No<string>();
     AVLtree<string> arvoreAux;
     int numHash;
-    aux = kinojo->buscaHash(nomeTabHash);
-    if(aux != NULL){
-      numHash = aux->getChave().funcaoHash(key);
-      arvoreAux = aux->getChave().getTree(numHash);
+    cout<<"TESTE"<<endl;
+
+    aux = kinojo->buscaHash(nomeTabHash)->getChave();
+    cout<<"TESTE1"<<endl;
+    cout<<"nome da tabela   :  "<<aux.getNome()<<endl;
+    if(!aux.checkTabHashVazia()){
+      cout<<"dkashdksau 123"<<endl;
+      numHash = aux.funcaoHash(key);
+      cout<<"skldhsakjd  : "<<aux.funcaoHash(key)<<endl;
+      arvoreAux = aux.getTree(numHash);
       if(arvoreAux.checkVazia()){
         auxiliar = arvoreAux.busca(key);
         if(auxiliar){
@@ -506,7 +513,6 @@ int main(){
   char igual, ponto;
   int numDeChaves;
   Kinojo* kinojo = new Kinojo();
-  TabelaHash<string>* th;
 
   do{
 
@@ -514,34 +520,34 @@ int main(){
 
     if(comando == "TH"){
       cin>>nome>>igual>>numDeChaves;
-      th = new TabelaHash<string>(numDeChaves, nome);
+      TabelaHash<string> th(numDeChaves, nome);
       while(numDeChaves--){
-        cin>>chave;
-        th->addHash(chave);
+        cin>>chave; //introduz as chaves na Tabela Hash
+        th.addHash(chave);
       }
+      kinojo->getTreeKinojo()->insereAVLHash(th);
+      cin>>ponto;
     }
 
-    cin>>ponto;
 
-    if(comando == "UNION"){
+
+    else if(comando == "UNION"){ //comando de Uniao de Tabelas Hash
       cin>>uni>>igual>>tabelaHash1>>tabelaHash2>>ponto;
+
     }
 
-    if(comando == "INTER"){
+    else if(comando == "INTER"){//comando de Intersecao das s Hash
       cin>>intersec>>igual>>tabelaHash1>>tabelaHash2>>ponto;
     }
 
-    if(comando == "MINUS"){
+    else if(comando == "MINUS"){//comando de Subtracao de Tabelas Hash
       cin>>minus>>igual>>tabelaHash1>>tabelaHash2>>ponto;
     }
 
-    if(comando == "PRINT"){
-      cout<<comando<<endl;
+    else if(comando == "PRINT"){
+      //cout<<comando<<endl;
       cin>>nomeTabelaHash>>key>>chave>>ponto;
-      cout<<"KEY    "<<key<<endl;
-      cout<<"Nome da Tabela:   "<<nomeTabelaHash<<endl;
-      cout<<"Chave: "<<chave<<endl;
-      kinojo->funcaoPrint(nomeTabelaHash, chave);
+      kinojo->funcaoPrint("kages", chave);
     }
 
   }while(comando != "FIM");
